@@ -17,3 +17,5 @@
 *.cxx
 
 scons.cfg
+.sconsign.dblite
+build
