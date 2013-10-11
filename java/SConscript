@@ -1,0 +1,47 @@
+import os
+import ConfigParser
+
+config = ConfigParser.RawConfigParser()
+
+config.read( ['scons.cfg', os.path.expanduser('../scons.cfg'), os.path.expanduser('../../scons.cfg')] )
+
+javaInclude = config.get( 'JAVA', 'inc' )
+
+env = Environment().Clone()
+
+env.Append(
+	CPPPATH = [
+			javaInclude,
+			"../srcCpp",
+		]
+	)
+
+env.Append(
+	CXXFLAGS = [
+			'-std=gnu++0x',
+			'-Wall',
+		]
+	)
+env.Replace(
+	SWIGFLAGS = [
+			'-java',
+			'-c++',
+			'-fcompact'
+		]
+	)
+
+env.Append(
+	LINKFLAGS = [
+			'-mno-cygwin',
+			'-Wl',
+		]
+	)
+
+javaHello = env.SharedLibrary(
+	'helloBindingJava',
+	[
+		'../../srcCpp/helloWorld.cpp',
+		'../../srcCpp/helloWorld.i',
+	],
+	)
+

@@ -3,10 +3,10 @@ import ConfigParser
 
 config = ConfigParser.RawConfigParser()
 
-config.read(['scons.cfg', os.path.expanduser('../scons.cfg')])
+config.read( ['scons.cfg', os.path.expanduser('../scons.cfg')] )
 
 pyInclude = config.get( 'PYTHON', 'inc' )
-
+javaInclude = config.get( 'JAVA', 'inc' )
 
 env = Environment().Clone()
 
@@ -24,35 +24,7 @@ env.Append(
 		]
 	)
 
-env.Append(
-	LINKFLAGS = [
-		]
-	)
-
 hello = env.StaticLibrary(
 	'helloWorld',
 	Glob( 'srcCpp/*.cpp' ),
-	)
-
-envPy = env
-
-envPy.Append(
-		SWIGFLAGS = [
-			'-python',
-			'-c++',
-			'-shadow',
-			'-Wall',
-		]
-	)
-
-envPy.Append(
-		SHLIBPREFIX = '_'
-	)
-
-pyHello = envPy.SharedLibrary(
-	'_helloBinding',
-	[
-		Glob( 'srcCpp/*.cpp' ),
-		Glob( 'srcCpp/*.i' ),
-	],
 	)

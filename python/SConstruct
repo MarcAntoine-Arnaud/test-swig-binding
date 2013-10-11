@@ -1,0 +1,3 @@
+
+SConscript( 'SConscript', variant_dir = "../build/python", duplicate = 0 )
+
