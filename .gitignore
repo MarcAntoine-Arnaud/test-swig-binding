@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+*.pyc
+*.os
+*.cxx
+
+scons.cfg
