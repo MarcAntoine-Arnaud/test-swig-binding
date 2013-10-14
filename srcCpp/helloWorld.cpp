@@ -3,6 +3,11 @@
 #include <iostream>
 #include <cstring>
 
+void basicPrintTest()
+{
+	std::cout << "basic call from c++" << std::endl;
+}
+
 HelloWorld::HelloWorld()
 	: stringData( "" )
 	, ptrData( nullptr )
@@ -30,8 +35,9 @@ void HelloWorld::setData( const char* data, const size_t size )
 	if( ptrData != nullptr )
 		delete[] ptrData;
 	
-	ptrData = new char[size];
+	ptrData = new char[size + 1];
 	std::memcpy( ptrData, data, size );
+	ptrData[size] = 0;
 }
 
 void HelloWorld::printElem()

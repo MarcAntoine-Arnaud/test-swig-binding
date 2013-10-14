@@ -1,3 +1,4 @@
 
-SConscript( 'SConscript', variant_dir = "build", duplicate = 0 )
+VariantDir( 'build', 'srcCpp', duplicate = 0 )
+SConscript( 'build/SConscript' )
 

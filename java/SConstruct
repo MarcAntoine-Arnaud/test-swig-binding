@@ -1,3 +1,0 @@
-
-SConscript( 'SConscript', variant_dir = "../build/java", duplicate = 0 )
-

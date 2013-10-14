@@ -1,0 +1,94 @@
+import os
+import ConfigParser
+
+config = ConfigParser.RawConfigParser()
+
+config.read( ['scons.cfg', os.path.expanduser('../scons.cfg'), os.path.expanduser('../../scons.cfg')] )
+
+javaInclude = config.get( 'JAVA', 'inc' )
+pyInclude   = config.get( 'PYTHON', 'inc' )
+
+envJava = Environment().Clone()
+envPy   = Environment().Clone()
+
+# C++ library
+env = Environment().Clone()
+
+env.Append(
+	CPPPATH = [
+			pyInclude,
+			"srcCpp",
+		],
+	CXXFLAGS = [
+			'-std=gnu++0x',
+			'-Wall',
+		],
+	)
+
+hello = env.SharedLibrary(
+	'helloWorld',
+	Glob( '*.cpp' ),
+	)
+
+# Java binding
+envJava.Replace(
+	CPPPATH = [
+			javaInclude,
+			".",
+		],
+	SWIGCXXFILESUFFIX= '_wrapJava$CXXFILESUFFIX',
+	CXXFLAGS = [
+			'-std=gnu++0x',
+			'-Wall',
+		],
+	SWIGFLAGS = [
+			'-java',
+			'-c++',
+			'-fcompact',
+		],
+	LINKFLAGS = [
+			'-mno-cygwin',
+			'-Wl',
+		],
+	)
+
+javaHello = envJava.SharedLibrary(
+	'helloBinding',
+	[
+		'helloWorld.cpp',
+		'helloWorld.i',
+	],
+	#LIBS=[ hello ],
+	)
+
+# Python binding
+envPy.Replace(
+	CPPPATH = [
+			pyInclude,
+			".",
+		],
+	SWIGCXXFILESUFFIX= '_wrapPython$CXXFILESUFFIX',
+	SHLIBPREFIX= '_',
+	CXXFLAGS = [
+			'-std=gnu++0x',
+			'-Wall',
+		],
+	SWIGFLAGS = [
+			'-python',
+			'-c++',
+			'-fcompact',
+		],
+	LINKFLAGS = [
+			'-mno-cygwin',
+			'-Wl',
+		],
+	)
+
+pythonHello = envPy.SharedLibrary(
+	'helloBinding',
+	[
+		'helloWorld.i',
+	],
+	LIBS=[ hello ],
+	)
+

@@ -3,6 +3,9 @@
 
 #include <string>
 
+void basicPrintTest();
+
+
 class HelloWorld
 {
 public:
